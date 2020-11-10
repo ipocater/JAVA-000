@@ -66,8 +66,6 @@ public class HttpOutboundHandler {
                     handlerResponse(inbound, ctx, endpointResponse);
                 } catch (Exception e){
                     e.printStackTrace();
-                } finally {
-
                 }
             }
 
