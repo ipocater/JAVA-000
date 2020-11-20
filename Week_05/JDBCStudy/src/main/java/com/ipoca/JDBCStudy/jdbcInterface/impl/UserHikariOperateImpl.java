@@ -2,22 +2,23 @@ package com.ipoca.JDBCStudy.jdbcInterface.impl;
 
 import com.ipoca.JDBCStudy.POJO.User;
 import com.ipoca.JDBCStudy.jdbcInterface.JDBCOperate;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserJDBCOperateImpl implements JDBCOperate<User> {
+public class UserHikariOperateImpl implements JDBCOperate<User> {
+
 
 
     private Connection getConnection(){
         Connection conn = null;
         try {
-            // 1.注册驱动
-            Class.forName("com.mysql.jdbc.Driver");
-            // 2.获取连接对象
-            String url = "jdbc:mysql://47.107.246.82:3306/test";
-            conn = DriverManager.getConnection(url, "test", "test");
+            HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
+            HikariDataSource ds = new HikariDataSource(config);
+            conn = ds.getConnection();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -165,4 +166,5 @@ public class UserJDBCOperateImpl implements JDBCOperate<User> {
         }
         return resultList;
     }
+
 }
