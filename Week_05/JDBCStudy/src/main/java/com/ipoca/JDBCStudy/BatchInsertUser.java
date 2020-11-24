@@ -15,7 +15,7 @@ public class BatchInsertUser {
 //        };
         Long startTime = System.currentTimeMillis();
         for (int j = 0; j < 10; j++){
-            new Thread(()->{
+            Thread thread = new Thread(()->{
                 User user = new User();
                 JDBCOperate<User> userJDBCOperate = new UserHikariOperateImpl();
                 for (int i = 0; i < 1000; i++){
@@ -26,7 +26,13 @@ public class BatchInsertUser {
 //                    user.setUpdateDate(new Date());
                     userJDBCOperate.insertEntity(user);
                 }
-            }).start();
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         Long endTime = System.currentTimeMillis();
         System.out.println("程序共用时："+ (endTime-startTime)/1000);
