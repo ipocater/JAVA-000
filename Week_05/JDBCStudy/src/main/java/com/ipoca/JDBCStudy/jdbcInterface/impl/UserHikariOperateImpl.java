@@ -10,21 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserHikariOperateImpl implements JDBCOperate<User> {
-
+    private static HikariDataSource ds = new HikariDataSource(new HikariConfig("src/main/resources/hikari.properties"));
 
 
     private Connection getConnection(){
         Connection conn = null;
         try {
-            HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
-            HikariDataSource ds = new HikariDataSource(config);
+//            HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
+//            HikariDataSource ds = new HikariDataSource(config);
             conn = ds.getConnection();
         } catch (Exception e){
             e.printStackTrace();
         }
         return conn;
     }
-
 
     @Override
     public Boolean insertEntity(User obj) {
@@ -33,7 +32,7 @@ public class UserHikariOperateImpl implements JDBCOperate<User> {
         Boolean result = false;
         try {
             stat = conn.createStatement();
-            String sql = "INSERT INTO `tb_user1` (`id`, `username`, `phone`) VALUES ('"+obj.getId()+"', '"+obj.getUsername()+"', '"+obj.getPhone()+"')";
+            String sql = "INSERT INTO `tb_jk_user` (`user_name`, `phone`, `password`) VALUES ('"+obj.getUserName()+"', '"+obj.getPhone()+"', '"+obj.getPassword()+"')";
             result = stat.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,6 +48,7 @@ public class UserHikariOperateImpl implements JDBCOperate<User> {
                 e.printStackTrace();
             }
         }
+        System.out.println("成功插入数据："+obj);
         return result;
     }
 
@@ -59,7 +59,7 @@ public class UserHikariOperateImpl implements JDBCOperate<User> {
         Boolean result = false;
         try {
             stat = conn.createStatement();
-            String sql = "UPDATE `tb_user1` set id = '"+obj.getId()+"', username= '"+obj.getUsername()+"', phone = '"+obj.getPhone()+"' where id= '"+obj.getId()+"'";
+            String sql = "UPDATE `tb_user1` set id = '"+obj.getUserId()+"', username= '"+obj.getUserName()+"', phone = '"+obj.getPhone()+"' where id= '"+obj.getUserId()+"'";
             result = stat.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,20 +133,20 @@ public class UserHikariOperateImpl implements JDBCOperate<User> {
         try {
             stat = conn.createStatement();
             String sql = "select id,username,phone from tb_user1 where 1 = 1";
-            if (obj.getId() != null){
-                sql += " and id = '" + obj.getId() + "' ";
+            if (obj.getUserId() != null){
+                sql += " and id = '" + obj.getUserId() + "' ";
             }
             if (obj.getPhone() != null){
                 sql += " and phone = '" + obj.getPhone() + "' ";
             }
-            if (obj.getUsername() != null){
-                sql += " and username = '" + obj.getUsername()+"' ";
+            if (obj.getUserName() != null){
+                sql += " and username = '" + obj.getUserName()+"' ";
             }
             ResultSet rs = stat.executeQuery(sql);
             while (rs.next()){
                 User user = new User();
-                user.setId(rs.getString("id"));
-                user.setUsername(rs.getString("username"));
+                user.setUserId(rs.getString("id"));
+                user.setUserName(rs.getString("username"));
                 user.setPhone(rs.getString("phone"));
                 resultList.add(user);
             }

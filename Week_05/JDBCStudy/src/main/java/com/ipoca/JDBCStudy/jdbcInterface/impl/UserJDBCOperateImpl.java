@@ -16,8 +16,8 @@ public class UserJDBCOperateImpl implements JDBCOperate<User> {
             // 1.注册驱动
             Class.forName("com.mysql.jdbc.Driver");
             // 2.获取连接对象
-            String url = "jdbc:mysql://47.107.246.82:3306/test";
-            conn = DriverManager.getConnection(url, "test", "test");
+            String url = "jdbc:mysql://47.107.246.82:3306/ipoca";
+            conn = DriverManager.getConnection(url, "ipoca", "ipoca123");
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -32,7 +32,7 @@ public class UserJDBCOperateImpl implements JDBCOperate<User> {
         Boolean result = false;
         try {
             stat = conn.createStatement();
-            String sql = "INSERT INTO `tb_user1` (`id`, `username`, `phone`) VALUES ('"+obj.getId()+"', '"+obj.getUsername()+"', '"+obj.getPhone()+"')";
+            String sql = "INSERT INTO `tb_jk_user` (`username`, `phone`, `password`,`create_date`,`update_date`) VALUES ('"+obj.getUserName()+"', '"+obj.getPhone()+"', '"+obj.getPassword()+", '"+obj.getCreateDate()+", '"+obj.getUpdateDate()+"')";
             result = stat.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class UserJDBCOperateImpl implements JDBCOperate<User> {
         Boolean result = false;
         try {
             stat = conn.createStatement();
-            String sql = "UPDATE `tb_user1` set id = '"+obj.getId()+"', username= '"+obj.getUsername()+"', phone = '"+obj.getPhone()+"' where id= '"+obj.getId()+"'";
+            String sql = "UPDATE `tb_user1` set id = '"+obj.getUserId()+"', username= '"+obj.getUserName()+"', phone = '"+obj.getPhone()+"' where id= '"+obj.getUserId()+"'";
             result = stat.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,20 +132,20 @@ public class UserJDBCOperateImpl implements JDBCOperate<User> {
         try {
             stat = conn.createStatement();
             String sql = "select id,username,phone from tb_user1 where 1 = 1";
-            if (obj.getId() != null){
-                sql += " and id = '" + obj.getId() + "' ";
+            if (obj.getUserId() != null){
+                sql += " and id = '" + obj.getUserId() + "' ";
             }
             if (obj.getPhone() != null){
                 sql += " and phone = '" + obj.getPhone() + "' ";
             }
-            if (obj.getUsername() != null){
-                sql += " and username = '" + obj.getUsername()+"' ";
+            if (obj.getUserName() != null){
+                sql += " and username = '" + obj.getUserName()+"' ";
             }
             ResultSet rs = stat.executeQuery(sql);
             while (rs.next()){
                 User user = new User();
-                user.setId(rs.getString("id"));
-                user.setUsername(rs.getString("username"));
+                user.setUserId(rs.getString("id"));
+                user.setUserName(rs.getString("username"));
                 user.setPhone(rs.getString("phone"));
                 resultList.add(user);
             }

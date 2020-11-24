@@ -39,8 +39,8 @@ public class JDBCTest {
         }
 
         User insertUser = new User();
-        insertUser.setId("8888");
-        insertUser.setUsername("vvvvvvip");
+        insertUser.setUserId("8888");
+        insertUser.setUserName("vvvvvvip");
         insertUser.setPhone("18888888888");
         userJDBCOperate.insertEntity(insertUser);
         users = userJDBCOperate.queryList(queryUser);
@@ -55,7 +55,7 @@ public class JDBCTest {
         for (User user : users){
             System.out.println(user);
         }
-        userJDBCOperate.deleteEntity(insertUser.getId());
+        userJDBCOperate.deleteEntity(insertUser.getUserId());
         users = userJDBCOperate.queryList(queryUser);
         System.out.println("-------------------------------------------------------------------------");
         for (User user : users){
