@@ -8,3 +8,5 @@
 4.使用preparedStatement语句批量插入100万条数据，用时611s（ps:开10个线程，每个线程循环10次，每次插入10000条数据）
   ![image](https://github.com/ipocater/JAVA-000/blob/main/Week_07/DBTestImg/100%E4%B8%87%E6%9D%A1%E5%BC%80%E5%8D%81%E4%B8%AA%E7%BA%BF%E7%A8%8B.png)
 
+总结：使用preparedStatement预编译后，插入的性能达到了两个数量级的提升。但是再达到1w/6s的性能后，很难再有过大的提升。由于本人使用的是阿里云上面的数据库，可能很容易达到性能瓶颈。
+
